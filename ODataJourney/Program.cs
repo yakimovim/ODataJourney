@@ -39,7 +39,8 @@ builder.Services
             .Expand()
             .Filter()
             .Count()
-            .OrderBy();
+            .OrderBy()
+            .SetMaxTop(1000);
     })
     .AddJsonOptions(configure =>
     {

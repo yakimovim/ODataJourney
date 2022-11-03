@@ -72,9 +72,9 @@ namespace ODataJourney.Controllers
 
         [HttpGet("odata")]
         [EnableQuery]
-        public IQueryable<Author> GetWithOData()
+        public IActionResult GetWithOData()
         {
-            return _db.Authors;
+            return Ok(_db.Authors);
         }
 
         [HttpGet("edm")]
