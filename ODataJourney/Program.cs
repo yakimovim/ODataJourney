@@ -28,8 +28,8 @@ builder.Services
             edmBuilder.EntitySet<AuthorDto>("manual");
             edmBuilder.EntitySet<ComplexAuthor>("nonsql");
 
-            edmBuilder.EntityType<AuthorDto>()
-                .Property(a => a.LastName).Name = "surName";
+            edmBuilder.EntityType<Author>()
+                .Property(a => a.HomePageUrl).Name = "url_home";
 
             return edmBuilder.GetEdmModel();
         }
