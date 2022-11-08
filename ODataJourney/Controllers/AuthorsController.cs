@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.AspNet.OData;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -49,6 +50,9 @@ namespace ODataJourney.Controllers
                 <a href=""mapping"">Mapping</a>
             </li>
             <li>
+                <a href=""automapper"">Automapper</a>
+            </li>
+            <li>
                 <a href=""manual"">Manual</a>
             </li>
             <li>
@@ -86,11 +90,16 @@ namespace ODataJourney.Controllers
         }
 
         [HttpGet("mapping")]
-        [ODataAttributeRouting]
         [EnableQuery]
         public IQueryable<AuthorDto> GetWithMapping()
         {
             return _db.Authors.ProjectTo<AuthorDto>(_mapper.ConfigurationProvider);
+        }
+
+        [HttpGet("automapper")]
+        public IQueryable<AuthorDto> GetWithAutoMapper(ODataQueryOptions<AuthorDto> query)
+        {
+            return _db.Authors.GetQuery(_mapper, query);
         }
 
         [HttpGet("manual")]

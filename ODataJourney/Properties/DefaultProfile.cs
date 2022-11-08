@@ -11,7 +11,9 @@ public class DefaultProfile : Profile
     public DefaultProfile()
     {
         CreateMap<Article, ArticleDto>();
-        CreateMap<Author, AuthorDto>();
+        CreateMap<Author, AuthorDto>()
+            .ForMember(a => a.Articles, o => o.ExplicitExpansion());
+
         CreateMap<Author, ComplexAuthor>()
             .ForMember(
                 d => d.NameHash,

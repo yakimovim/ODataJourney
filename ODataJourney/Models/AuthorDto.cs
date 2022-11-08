@@ -12,11 +12,11 @@ public class AuthorDto
     public string FirstName { get; set; }
 
     [Required]
-    [JsonPropertyName("surName")]
     public string LastName { get; set; }
 
     public string? ImageUrl { get; set; }
 
+    [JsonPropertyName("@url.home")]
     public string? HomePageUrl { get; set; }
 
     public ICollection<ArticleDto> Articles { get; set; }
