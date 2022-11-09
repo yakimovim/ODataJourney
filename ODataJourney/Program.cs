@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services
+    builder.Services
     .AddControllers()
     .AddOData(opts =>
     {
@@ -30,6 +30,8 @@ builder.Services
 
             edmBuilder.EntityType<Author>()
                 .Property(a => a.HomePageUrl).Name = "url_home";
+            edmBuilder.EntityType<ComplexAuthor>()
+                .Property(a => a.FullName).Name = "name";
 
             return edmBuilder.GetEdmModel();
         }

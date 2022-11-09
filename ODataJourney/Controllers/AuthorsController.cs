@@ -114,6 +114,7 @@ namespace ODataJourney.Controllers
         }
 
         [HttpGet("nonsql")]
+        //[ODataAttributeRouting]
         public IActionResult GetNonSqlConvertible(ODataQueryOptions<ComplexAuthor> options)
         {
             try
@@ -125,15 +126,11 @@ namespace ODataJourney.Controllers
                 return BadRequest(e.Message);
             }
 
-            var query = _db.Authors.ProjectTo<ComplexAuthor>(_mapper.ConfigurationProvider);
-
-            var result = options.ApplyTo(query);
-
-            return Ok(result);
+            return Ok(_db.Authors.GetQuery(_mapper, options));
         }
 
         [HttpGet("add")]
-        public IActionResult ApplyAdditionalData(ODataQueryOptions<ComplexAuthor> options)
+        public IActionResult ApplyAdditionalData(ODataQueryOptions<AuthorDto> options)
         {
             try
             {
@@ -144,21 +141,23 @@ namespace ODataJourney.Controllers
                 return BadRequest(e.Message);
             }
 
-            var query = _db.Authors.ProjectTo<ComplexAuthor>(_mapper.ConfigurationProvider);
+            var query = _db.Authors.GetQuery(_mapper, options);
 
-            var authors = options
-                .ApplyTo(query, AllowedQueryOptions.Select)
-                .Cast<ComplexAuthor>()
-                .ToArray();
+            var authors = query.ToArray();
+
+            //var authors = options
+            //    .ApplyTo(query, AllowedQueryOptions.Select)
+            //    .Cast<ComplexAuthor>()
+            //    .ToArray();
 
             foreach (var author in authors)
             {
                 author.LastName += " (Mr)";
             }
 
-            var result = options.ApplyTo(authors.AsQueryable(), AllowedQueryOptions.All & ~AllowedQueryOptions.Select);
+            //var result = options.ApplyTo(authors.AsQueryable(), AllowedQueryOptions.All & ~AllowedQueryOptions.Select);
 
-            return Ok(result);
+            return Ok(authors);
         }
     }
 }

@@ -15,6 +15,8 @@ public class DefaultProfile : Profile
             .ForMember(a => a.Articles, o => o.ExplicitExpansion());
 
         CreateMap<Author, ComplexAuthor>()
+            .ForMember(d => d.FullName,
+                opt => opt.MapFrom(s => s.FirstName + " " + s.LastName))
             .ForMember(
                 d => d.NameHash,
                 opt => opt.MapFrom(a => string.Join(",", SHA256.HashData(Encoding.UTF32.GetBytes(a.FirstName + " " + a.LastName))))
