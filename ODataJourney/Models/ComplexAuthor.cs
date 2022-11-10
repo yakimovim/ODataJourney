@@ -15,4 +15,6 @@ public class ComplexAuthor
     [NonFilterable]
     [Unsortable]
     public string NameHash { get; set; }
+
+    public ICollection<ArticleDto> Articles { get; set; }
 }

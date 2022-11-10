@@ -130,7 +130,8 @@ namespace ODataJourney.Controllers
         }
 
         [HttpGet("add")]
-        public IActionResult ApplyAdditionalData(ODataQueryOptions<AuthorDto> options)
+        [ODataAttributeRouting]
+        public IActionResult ApplyAdditionalData(ODataQueryOptions<ComplexAuthor> options)
         {
             try
             {
@@ -141,23 +142,31 @@ namespace ODataJourney.Controllers
                 return BadRequest(e.Message);
             }
 
-            var query = _db.Authors.GetQuery(_mapper, options);
+            //var query = _db.Authors.ProjectTo<ComplexAuthor>(
+            //    _mapper.ConfigurationProvider); 
+            
+            var query = _db.Authors
+                .GetQuery(_mapper, options)
+                .ToArray();
 
-            var authors = query.ToArray();
+            //var authors = query.ToArray();
 
             //var authors = options
             //    .ApplyTo(query, AllowedQueryOptions.Select)
             //    .Cast<ComplexAuthor>()
             //    .ToArray();
 
-            foreach (var author in authors)
+            foreach (var author in query)
             {
-                author.LastName += " (Mr)";
+                author.FullName += " (Mr)";
             }
 
-            //var result = options.ApplyTo(authors.AsQueryable(), AllowedQueryOptions.All & ~AllowedQueryOptions.Select);
+            //var result = options.ApplyTo(
+            //    authors.AsQueryable(),
+            //    AllowedQueryOptions.All & ~AllowedQueryOptions.Select
+            //);
 
-            return Ok(authors);
+            return Ok(query);
         }
     }
 }

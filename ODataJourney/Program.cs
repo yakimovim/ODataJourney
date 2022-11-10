@@ -27,11 +27,14 @@ var builder = WebApplication.CreateBuilder(args);
             edmBuilder.EntitySet<Author>("edm");
             edmBuilder.EntitySet<AuthorDto>("manual");
             edmBuilder.EntitySet<ComplexAuthor>("nonsql");
+            edmBuilder.EntitySet<ComplexAuthor>("add");
 
             edmBuilder.EntityType<Author>()
                 .Property(a => a.HomePageUrl).Name = "url_home";
             edmBuilder.EntityType<ComplexAuthor>()
                 .Property(a => a.FullName).Name = "name";
+            edmBuilder.EntityType<ComplexAuthor>()
+                .CollectionProperty(a => a.Articles).IsNavigable();
 
             return edmBuilder.GetEdmModel();
         }

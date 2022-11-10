@@ -15,6 +15,7 @@ public class DefaultProfile : Profile
             .ForMember(a => a.Articles, o => o.ExplicitExpansion());
 
         CreateMap<Author, ComplexAuthor>()
+            .ForMember(a => a.Articles, o => o.ExplicitExpansion())
             .ForMember(d => d.FullName,
                 opt => opt.MapFrom(s => s.FirstName + " " + s.LastName))
             .ForMember(
